@@ -25,20 +25,20 @@ void drawLine(const int& i0, const int& j0, const int& i1, const int& j1, const 
 
 void drawBox(const int& i_c, const int& j_c)
 {
-	const int thickness = 60;   //µÎ²²
+	const int thickness = 70;   
 
 	for (int j = j_c - thickness; j < j_c + thickness; j++)
 		for (int i = i_c - thickness; i < i_c + thickness; i++)
 		{
-			drawPixel(i, j, 0.0f, 1.0f, 0.0f);
+			drawPixel(i, j, 0.0f, 1.0f, 1.0f);
 		}
 }
 
 void drawTriangle(const int& left, const int& right, const int& up)
 {
-	drawLine(left, left, right, left, 1.0f, 0.0f, 1.0f);
-	drawLine(up, up, right, left, 1.0f, 0.0f, 1.0f);
-	drawLine(left, left, up, up, 1.0f, 0.0f, 1.0f);
+	drawLine(left, left, right, left, 0.0f, 1.0f, 0.0f);
+	drawLine(up, up, right, left, 0.0f, 1.0f, 0.0f);
+	drawLine(left, left, up, up, 0.0f, 1.0f, 0.0f);
 }
 
 void drawEmptyBox(const int& i_s, const int& j_s, const int& i_e, const int& j_e)  //s=start, e=end
@@ -69,24 +69,12 @@ void drawCircle(const int& x_c, const int& y_c, const int& radius)  //first - di
 		{
 			double func = ((i - x_c)*(i - x_c) + (j - y_c)*(j - y_c) - radius*radius);
 
-			if (func >= 0 && func <= 60)    //func>=0&&func<=9 , func == 0||func==1||func==2||func==5
-				drawPixel(i, j, 1.0f, 0.0f, 0.0f);
+			if (func >= 0 && func <= 120)    
+				drawPixel(i, j, 0.0f, 0.0f, 0.0f);
 			else
 				drawPixel(0, 0, 1.0f, 1.0f, 1.0f);
 		}
 }
-
-//void drawCircle(const int& x_c, const int y_c)
-//{
-//	const double x_c = 0.5;
-//	const double y_c = 0.5;
-//	const double r = 0.5;
-//
-//	const double func = (x - x_c)*(x - x_c) + (y - y_c)*(y - y_c) - r*r;
-//
-//	if (func > 0.0) return false;
-//	else return true;
-//}
 
 int main(void)
 {
@@ -119,31 +107,31 @@ int main(void)
 		drawLine(51, 350, 151, 450, 0.0f, 0.0f, 1.0f);
 		drawLine(52, 350, 152, 450, 0.0f, 0.0f, 1.0f);  //3-width-line
 
-														//for(int j=100;j<300;j++)
-														//	for (int i = 100; i < 300; i++)
-														//	{
-														//		pixels[(i + width*j) * 3 + 0] = 0.0f;
-														//		pixels[(i + width*j) * 3 + 1] = 1.0f;
-														//		pixels[(i + width*j) * 3 + 2] = 0.0f;
-														//	}
+		//for(int j=100;j<300;j++)
+			//for (int i = 100; i < 300; i++)
+			//{
+				//pixels[(i + width*j) * 3 + 0] = 0.0f;
+				//pixels[(i + width*j) * 3 + 1] = 1.0f;
+				//pixels[(i + width*j) * 3 + 2] = 0.0f;
+			//}
 
-		drawBox(550, 400);               //full box
+		drawBox(550, 370);               //full box
 
 		drawEmptyBox(250, 300, 400, 450);   //i_s,j_s,i_e,j_e, empty box
 
-		drawTriangle(40, 160, 120);     //left,right,up  triangle
+		drawTriangle(40, 160, 100);     //left,right,up  triangle
 
-										//drawLine(50, 150, 130, 229, 0.0f, 0.0f, 1.0f);
-										//drawLine(51, 150, 180, 150, 0.0f, 0.0f, 1.0f);
-										//drawLine(130, 229, 180, 150, 0.0f, 0.0f, 1.0f);  //triangle
+		//drawLine(50, 150, 130, 229, 0.0f, 0.0f, 1.0f);
+		//drawLine(51, 150, 180, 150, 0.0f, 0.0f, 1.0f);
+		//drawLine(130, 229, 180, 150, 0.0f, 0.0f, 1.0f);  //triangle
 
-		drawLine(300, 100, 370, 50, 0.0f, 0.0f, 1.0f);
-		drawLine(230, 50, 300, 100, 0.0f, 0.0f, 1.0f);
-		drawLine(230, 50, 260, 10, 0.0f, 0.0f, 1.0f);
-		drawLine(260, 10, 340, 10, 0.0f, 0.0f, 1.0f);
-		drawLine(340, 10, 370, 50, 0.0f, 0.0f, 1.0f);   //pentagon
+		drawLine(300, 150, 370, 100, 1.0f, 0.0f, 1.0f);
+		drawLine(230, 100, 300, 150, 1.0f, 0.0f, 1.0f);
+		drawLine(230, 100, 260, 40, 1.0f, 0.0f, 1.0f);
+		drawLine(260, 40, 340, 40, 1.0f, 0.0f, 1.0f);
+		drawLine(340, 40, 370, 100, 1.0f, 0.0f, 1.0f);   //pentagon       (300,100), (370,50), (230,50), (260,10), (340,10)
 
-		drawCircle(500, 100, 40);  //circle
+		drawCircle(500, 100, 60);  //circle
 
 		glDrawPixels(width, height, GL_RGB, GL_FLOAT, pixels);
 		//We do that.
@@ -161,3 +149,4 @@ int main(void)
 	glfwTerminate();
 	return 0;
 }
+
