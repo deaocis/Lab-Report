@@ -37,9 +37,9 @@ void drawBox(const int& i_c, const int& j_c)
 
 void drawTriangle(const int& left, const int& right, const int& up)
 {
-	drawLine(left, left, right, left, 0.0f, 1.0f, 0.0f);
-	drawLine(up, up, right, left, 0.0f, 1.0f, 0.0f);
-	drawLine(left, left, up, up, 0.0f, 1.0f, 0.0f);
+	drawLine(left, (up/2), (left+right)/2, up-10, 1.0f, 0.0f, 0.0f);
+	drawLine((left + right) / 2, up-10, right, (up/2), 1.0f, 0.0f, 0.0f);
+	drawLine(left, (up/2), right, (up/2), 1.0f, 0.0f, 0.0f);
 }
 
 void drawEmptyBox(const int& i_s, const int& j_s, const int& i_e, const int& j_e)  //s=start, e=end
@@ -88,6 +88,19 @@ void SecondCircle(const int& x_c, const int& y_c, const int& radius)
 		{
 			double func = ((i - x_c)*(i - x_c) + (j - y_c)*(j - y_c) - radius*radius);
 			if (func >= 0 && func <= 120)
+				drawPixel(i, j, 1.0f, 0.0f, 0.0f);
+			else
+				drawPixel(0, 0, 1.0f, 1.0f, 1.0f);
+		}
+}
+
+void Tenth_Circle(const int& x_c, const int& y_c, const int& radius)
+{
+	for (double j = 0; j<height; j++)
+		for (double i = 0; i < width; i++)
+		{
+			double func = ((i - x_c)*(i - x_c) + (j - y_c)*(j - y_c) - radius*radius);
+			if (func >= 0 && func <= 120&&i<=x_c)
 				drawPixel(i, j, 1.0f, 0.0f, 0.0f);
 			else
 				drawPixel(0, 0, 1.0f, 1.0f, 1.0f);
@@ -160,57 +173,129 @@ int main(void)
 		glfwGetCursorPos(window, &xpos, &ypos);
 
 		//First Icon
-		drawCircle(80, 400, 50);
+		drawCircle(80, 400, 60);
 		drawLine(40, 380, 120, 420, 1.0f, 0.0f, 0.0f);
 		drawLine(41, 380, 121, 420, 1.0f, 0.0f, 0.0f);
 		drawLine(42, 380, 122, 420, 1.0f, 0.0f, 0.0f);  //3-width-line
-		if (IntheCircle(xpos, ypos, 80, height - 400, 50) == true)
+		if (IntheCircle(xpos, ypos, 80, height - 400, 60) == true)
 		{
-			ChangeCircle_Color(80, 400, 50);
+			ChangeCircle_Color(80, 400, 60);
 		}
 
 		//Second Icon
-		drawCircle(200, 400, 50); 
+		drawCircle(200, 400, 60); 
 		SecondCircle(200, 400, 30);
 
-		if (IntheCircle(xpos, ypos, 200, height - 400, 50) == true)
+		if (IntheCircle(xpos, ypos, 200, height - 400, 60) == true)
 		{
-			ChangeCircle_Color(200, 400, 50);
+			ChangeCircle_Color(200, 400, 60);
 		}
 
 		//Third Icon
-		drawCircle(320, 400, 50);
+		drawCircle(320, 400, 60);
 		drawEmptyBox(300, 380, 340, 420);
 
-		if (IntheCircle(xpos, ypos, 320, height - 400, 50) == true)
+		if (IntheCircle(xpos, ypos, 320, height - 400, 60) == true)
 		{
-			ChangeCircle_Color(320, 400, 50);
+			ChangeCircle_Color(320, 400, 60);
 		}
 
 		//Fourth Icon
-		drawCircle(440, 400, 50);
+		drawCircle(440, 400, 60);
 		drawLine(410, 380, 460, 430, 1.0f, 0.0f, 0.0f);
 		drawLine(410, 430, 460, 380, 1.0f, 0.0f, 0.0f);
 
-		if (IntheCircle(xpos, ypos, 430, height - 400, 50) == true)
+		if (IntheCircle(xpos, ypos, 430, height - 400, 60) == true)
 		{
-			ChangeCircle_Color(440, 400, 50);
+			ChangeCircle_Color(440, 400, 60);
 		}
 
 		//Fifth Icon
-		drawCircle(560, 400, 50);
-		for (int i = 370; i < 420;i++)
+		drawCircle(560, 400, 60);
+		for (int i = 370; i < 440;i++)
 			drawPixel(560, i, 1.0f, 0.0f, 0.0f);
 
 		drawLine(530, 390, 560, 370, 1.0f, 0.0f, 0.0f);
 		drawLine(560, 370, 590, 390, 1.0f, 0.0f, 0.0f);
 
-		if (IntheCircle(xpos, ypos, 560, height - 400, 50) == true)
+		if (IntheCircle(xpos, ypos, 560, height - 400, 60) == true)
 		{
-			ChangeCircle_Color(560, 400, 50);
+			ChangeCircle_Color(560, 400, 60);
 		}
 
-		//S
+		//Sixth Icon
+		drawCircle(80, 150, 60);
+		drawTriangle(50, 110, 210);
+
+		if (IntheCircle(xpos, ypos, 80, height - 150, 60) == true)
+		{
+			ChangeCircle_Color(80, 150, 60);
+		}
+
+		//Seventh Icon
+		drawCircle(200, 150, 60);
+		for (int i = 100; i < 190; i++)
+			drawPixel(200, i, 1.0f, 0.0f, 0.0f);
+
+		if (IntheCircle(xpos, ypos, 200, height - 150, 60) == true)
+		{
+			ChangeCircle_Color(200, 150, 60);
+		}
+
+		//Eigth Icon
+		drawCircle(320, 150, 60);
+		for (int i = 120; i < 180; i++)
+			drawPixel(280, i, 1.0f, 0.0f, 0.0f);
+		drawLine(280, 150, 310, 150, 1.0f, 0.0f, 0.0f);
+		for (int i = 120; i < 180; i++)
+			drawPixel(310, i, 1.0f, 0.0f, 0.0f);
+
+		for (int j = 175; j < 180; j++)
+			for (int i = 337; i <= 340; i++)
+			{
+				drawPixel(i, j, 1.0f, 0.0f, 0.0f);
+			}
+
+		for (int i = 120; i < 170; i++)
+			drawPixel(339, i, 1.0f, 0.0f, 0.0f);
+
+		if (IntheCircle(xpos, ypos, 320, height - 150, 60) == true)
+		{
+			ChangeCircle_Color(320, 150, 60);
+		}
+
+
+		//Nineth Icon
+		drawCircle(440, 150, 60);
+
+		drawLine(400, 120, 430, 180, 1.0f, 0.0f, 0.0f);
+		drawLine(430, 180, 460, 120, 1.0f, 0.0f, 0.0f);
+		drawLine(413, 145, 447, 145, 1.0f, 0.0f, 0.0f);
+		drawLine(455, 180, 475, 180, 1.0f, 0.0f, 0.0f);
+		for (int i = 170; i < 190; i++)
+			drawPixel(465, i, 1.0f, 0.0f, 0.0f);
+
+		if (IntheCircle(xpos, ypos, 440, height - 150, 60) == true)
+		{
+			ChangeCircle_Color(440, 150, 60);
+		}
+
+		//Tenth Icon
+		drawCircle(560, 150, 60);
+		Tenth_Circle(540, 150, 20);
+
+		drawLine(550, 150, 570, 150, 1.0f, 0.0f, 0.0f);
+		for (int i = 140; i < 160; i++)
+			drawPixel(560, i, 1.0f, 0.0f, 0.0f);
+
+		drawLine(575, 150, 595, 150, 1.0f, 0.0f, 0.0f);
+		for (int i = 140; i < 160; i++)
+			drawPixel(585, i, 1.0f, 0.0f, 0.0f);
+
+		if (IntheCircle(xpos, ypos, 560, height - 150, 60) == true)
+		{
+			ChangeCircle_Color(560, 150, 60);
+		}
 
 		glDrawPixels(width, height, GL_RGB, GL_FLOAT, pixels);
 		//We do that.
