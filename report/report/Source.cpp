@@ -1,5 +1,6 @@
 #include <GLFW/glfw3.h>
 #include <algorithm>
+#include <stdbool.h>
 
 const int width = 640;
 const int height = 480;
@@ -53,29 +54,6 @@ void drawEmptyBox(const int& i_s, const int& j_s, const int& i_e, const int& j_e
 		}
 }
 
-//void drawPentagon(const int& i0, const int& i1, const int& i2, const int& i3, const int& i4)  //No
-//{
-//	drawLine(i0, i0, i1, i1, 0.0f, 0.0f, 1.0f);
-//	drawLine(i1, i1, i2, i2, 0.0f, 0.0f, 1.0f);
-//	drawLine(i2, i2, i3, i3, 0.0f, 0.0f, 1.0f);
-//	drawLine(i3, i3, i4, i4, 0.0f, 0.0f, 1.0f);
-//	drawLine(i4, i4, i0, i0, 0.0f, 0.0f, 1.0f);
-//}
-
-//void drawCircle(const int& x_c, const int& y_c, const int& radius)  //first - distance=radius ->draw
-//{
-//	for (double j = 0; j<height; j++)
-//		for (double i = 0; i < width; i++)
-//		{
-//			double func = ((i - x_c)*(i - x_c) + (j - y_c)*(j - y_c) - radius*radius);
-//
-//			if (func >= 0 && func <= 100)    
-//				drawPixel(i, j, 1.0f, 0.0f, 0.0f);
-//			else
-//				drawPixel(0, 0, 1.0f, 1.0f, 1.0f);
-//		}
-//}
-
 void drawCircle(int x0, int y0, int radius)  //Real Circle
 {
 	int x = radius;
@@ -103,6 +81,54 @@ void drawCircle(int x0, int y0, int radius)  //Real Circle
 		}
 	}
 }
+void SecondCircle(const int& x_c, const int& y_c, const int& radius)
+{
+	for (double j = 0; j<height; j++)
+		for (double i = 0; i < width; i++)
+		{
+			double func = ((i - x_c)*(i - x_c) + (j - y_c)*(j - y_c) - radius*radius);
+			if (func >= 0 && func <= 120)
+				drawPixel(i, j, 1.0f, 0.0f, 0.0f);
+			else
+				drawPixel(0, 0, 1.0f, 1.0f, 1.0f);
+		}
+}
+
+void ChangeCircle_Color(int x0, int y0, int radius)  //Change Color
+{
+	int x = radius;
+	int y = 0;
+	int err = 0;
+
+	while (x >= y)
+	{
+
+		drawPixel(x0 + x, y0 + y, 0.0f, 0.0f, 1.0f);
+		drawPixel(x0 + y, y0 + x, 0.0f, 0.0f, 1.0f);
+		drawPixel(x0 - y, y0 + x, 0.0f, 0.0f, 1.0f);
+		drawPixel(x0 - x, y0 + y, 0.0f, 0.0f, 1.0f);
+		drawPixel(x0 - x, y0 - y, 0.0f, 0.0f, 1.0f);
+		drawPixel(x0 - y, y0 - x, 0.0f, 0.0f, 1.0f);
+		drawPixel(x0 + y, y0 - x, 0.0f, 0.0f, 1.0f);
+		drawPixel(x0 + x, y0 - y, 0.0f, 0.0f, 1.0f);
+
+		y += 1;
+		err += 1 + 2 * y;
+		if (2 * (err - x) + 1 > 0)
+		{
+			x -= 1;
+			err += 1 - 2 * x;
+		}
+	}
+}
+
+bool IntheCircle(const double x, const double y,const double x_c, const double y_c, const int radius)
+{
+	const double func = (x - x_c)*(x - x_c) + (y - y_c)*(y - y_c) - radius*radius;
+
+	if (func > 0.0) return false;
+	else return true;
+}
 
 int main(void)
 {
@@ -125,41 +151,66 @@ int main(void)
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
+		double xpos, ypos;
+		
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		std::fill_n(pixels, width*height * 3, 1.0f);	// white background
+		glfwGetCursorPos(window, &xpos, &ypos);
 
+		//First Icon
+		drawCircle(80, 400, 50);
+		drawLine(40, 380, 120, 420, 1.0f, 0.0f, 0.0f);
+		drawLine(41, 380, 121, 420, 1.0f, 0.0f, 0.0f);
+		drawLine(42, 380, 122, 420, 1.0f, 0.0f, 0.0f);  //3-width-line
+		if (IntheCircle(xpos, ypos, 80, height - 400, 50) == true)
+		{
+			ChangeCircle_Color(80, 400, 50);
+		}
 
-		drawLine(50, 350, 150, 450, 0.0f, 0.0f, 1.0f);
-		drawLine(51, 350, 151, 450, 0.0f, 0.0f, 1.0f);
-		drawLine(52, 350, 152, 450, 0.0f, 0.0f, 1.0f);  //3-width-line
+		//Second Icon
+		drawCircle(200, 400, 50); 
+		SecondCircle(200, 400, 30);
 
-														//for(int j=100;j<300;j++)
-														//for (int i = 100; i < 300; i++)
-														//{
-														//pixels[(i + width*j) * 3 + 0] = 0.0f;
-														//pixels[(i + width*j) * 3 + 1] = 1.0f;
-														//pixels[(i + width*j) * 3 + 2] = 0.0f;
-														//}
+		if (IntheCircle(xpos, ypos, 200, height - 400, 50) == true)
+		{
+			ChangeCircle_Color(200, 400, 50);
+		}
 
-		drawBox(550, 370);               //full box
+		//Third Icon
+		drawCircle(320, 400, 50);
+		drawEmptyBox(300, 380, 340, 420);
 
-		drawEmptyBox(250, 300, 400, 450);   //i_s,j_s,i_e,j_e, empty box
+		if (IntheCircle(xpos, ypos, 320, height - 400, 50) == true)
+		{
+			ChangeCircle_Color(320, 400, 50);
+		}
 
-		drawTriangle(40, 160, 100);     //left,right,up  triangle
+		//Fourth Icon
+		drawCircle(440, 400, 50);
+		drawLine(410, 380, 460, 430, 1.0f, 0.0f, 0.0f);
+		drawLine(410, 430, 460, 380, 1.0f, 0.0f, 0.0f);
 
-										//drawLine(50, 150, 130, 229, 0.0f, 0.0f, 1.0f);
-										//drawLine(51, 150, 180, 150, 0.0f, 0.0f, 1.0f);
-										//drawLine(130, 229, 180, 150, 0.0f, 0.0f, 1.0f);  //triangle
+		if (IntheCircle(xpos, ypos, 430, height - 400, 50) == true)
+		{
+			ChangeCircle_Color(440, 400, 50);
+		}
 
-		drawLine(300, 150, 370, 100, 1.0f, 0.0f, 1.0f);
-		drawLine(230, 100, 300, 150, 1.0f, 0.0f, 1.0f);
-		drawLine(230, 100, 260, 40, 1.0f, 0.0f, 1.0f);
-		drawLine(260, 40, 340, 40, 1.0f, 0.0f, 1.0f);
-		drawLine(340, 40, 370, 100, 1.0f, 0.0f, 1.0f);   //pentagon     (300,100), (370,50), (230,50), (260,10), (340,10)
+		//Fifth Icon
+		drawCircle(560, 400, 50);
+		for (int i = 370; i < 420;i++)
+			drawPixel(560, i, 1.0f, 0.0f, 0.0f);
 
-		drawCircle(500, 100, 80);  //circle
+		drawLine(530, 390, 560, 370, 1.0f, 0.0f, 0.0f);
+		drawLine(560, 370, 590, 390, 1.0f, 0.0f, 0.0f);
+
+		if (IntheCircle(xpos, ypos, 560, height - 400, 50) == true)
+		{
+			ChangeCircle_Color(560, 400, 50);
+		}
+
+		//S
 
 		glDrawPixels(width, height, GL_RGB, GL_FLOAT, pixels);
 		//We do that.
@@ -177,4 +228,3 @@ int main(void)
 	glfwTerminate();
 	return 0;
 }
-
