@@ -116,14 +116,14 @@ void ChangeCircle_Color(int x0, int y0, int radius)  //Change Color
 	while (x >= y)
 	{
 
-		drawPixel(x0 + x, y0 + y, 0.0f, 0.0f, 1.0f);
-		drawPixel(x0 + y, y0 + x, 0.0f, 0.0f, 1.0f);
-		drawPixel(x0 - y, y0 + x, 0.0f, 0.0f, 1.0f);
-		drawPixel(x0 - x, y0 + y, 0.0f, 0.0f, 1.0f);
-		drawPixel(x0 - x, y0 - y, 0.0f, 0.0f, 1.0f);
-		drawPixel(x0 - y, y0 - x, 0.0f, 0.0f, 1.0f);
-		drawPixel(x0 + y, y0 - x, 0.0f, 0.0f, 1.0f);
-		drawPixel(x0 + x, y0 - y, 0.0f, 0.0f, 1.0f);
+		drawPixel(x0 + x, y0 + y, 0.0f, 1.0f, 1.0f);
+		drawPixel(x0 + y, y0 + x, 0.0f, 1.0f, 1.0f);
+		drawPixel(x0 - y, y0 + x, 0.0f, 1.0f, 1.0f);
+		drawPixel(x0 - x, y0 + y, 0.0f, 1.0f, 1.0f);
+		drawPixel(x0 - x, y0 - y, 0.0f, 1.0f, 1.0f);
+		drawPixel(x0 - y, y0 - x, 0.0f, 1.0f, 1.0f);
+		drawPixel(x0 + y, y0 - x, 0.0f, 1.0f, 1.0f);
+		drawPixel(x0 + x, y0 - y, 0.0f, 1.0f, 1.0f);
 
 		y += 1;
 		err += 1 + 2 * y;
