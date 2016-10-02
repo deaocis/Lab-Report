@@ -67,11 +67,29 @@ public:
 
 GeometricObject **my_objects = new GeometricObject*[num_circles];
 
-void drawOnPixelBuffer()
+void drawOnPixelBuffer(double xpos, double ypos)
 {
 	std::fill_n(pixels, width*height * 3, 1.0f);	// white background
 
-	
+	for (int i = 0; i < num_circles / 2; i++)
+	{
+		my_objects[i]->draw();
+
+		if (IntheCircle(xpos, ypos, (i + 1) * 60, height - 400, 30) == true)
+		{
+			ChangeCircle_Color((i + 1) * 60, 400, 30);
+		}
+	}
+
+	for (int i = num_circles / 2; i < num_circles; i++)
+	{
+		my_objects[i]->draw();
+
+		if (IntheCircle(xpos, ypos, (i - 9) * 60, height - 150, 30) == true)
+		{
+			ChangeCircle_Color((i - 9) * 60, 150, 30);
+		}
+	}
 }
 
 int main(void)
@@ -136,25 +154,7 @@ int main(void)
 		std::fill_n(pixels, width*height * 3, 1.0f);	// white background
 		glfwGetCursorPos(window, &xpos, &ypos);
 
-		for (int i = 0; i < num_circles/2; i++)
-		{
-			my_objects[i]->draw();
-
-			if (IntheCircle(xpos, ypos, (i+1)*60, height - 400, 30) == true)
-			{
-				ChangeCircle_Color((i + 1) * 60, 400, 30);
-			}
-		}
-
-		for (int i = num_circles/2; i < num_circles; i++)
-		{
-			my_objects[i]->draw();
-
-			if (IntheCircle(xpos, ypos, (i -9) * 60, height - 150, 30) == true)
-			{
-				ChangeCircle_Color((i-9) * 60, 150, 30);
-			}
-		}
+		drawOnPixelBuffer(xpos, ypos);
 
 		////First Icon
 		//drawLine(40, 380, 120, 420, 1.0f, 0.0f, 0.0f);
