@@ -18,8 +18,10 @@ void drawEmptyBox(const int& i_s, const int& j_s, const int& i_e, const int& j_e
 void drawCircle(int x0, int y0, int radius);
 void drawBox(const int& i_c, const int& j_c);
 void drawTriangle(const int& left, const int& right, const int& up);
+void Reverse_drawTriangle(const int& left, const int& right, const int& up);
 void SecondCircle(const int& x_c, const int& y_c, const int& radius);
 void Tenth_Circle(const int& x_c, const int& y_c, const int& radius);
+void Reverse_Tenth_Circle(const int& x_c, const int& y_c, const int& radius);
 void ChangeCircle_Color(int x0, int y0, int radius);  //Change Color
 bool IntheCircle(const double x, const double y, const int x_c, const int y_c, const int radius);
 
@@ -31,6 +33,55 @@ public:
 		std::cout << "Circle Error!" << std::endl;
 	}
 };
+
+class r_half_Circle : public GeometricObject
+{
+	int center_x, center_y;
+	int radius;
+
+public:
+	r_half_Circle(const int& _center_x, const int& _center_y, const int& _radius)
+	{
+		initialize(_center_x, _center_y, _radius);
+	}
+
+	void initialize(const int& _center_x, const int& _center_y, const int& _radius)
+	{
+		center_x = _center_x;
+		center_y = _center_y;
+		radius = _radius;
+	}
+
+	void draw()
+	{
+		Reverse_Tenth_Circle(center_x, center_y, radius);
+	}
+};
+
+class half_Circle : public GeometricObject
+{
+	int center_x, center_y;
+	int radius;
+
+public:
+	half_Circle(const int& _center_x, const int& _center_y, const int& _radius)
+	{
+		initialize(_center_x, _center_y, _radius);
+	}
+
+	void initialize(const int& _center_x, const int& _center_y, const int& _radius)
+	{
+		center_x = _center_x;
+		center_y = _center_y;
+		radius = _radius;
+	}
+
+	void draw()
+	{
+		Tenth_Circle(center_x, center_y, radius);
+	}
+};
+
 
 class Triangle :public GeometricObject
 {
@@ -55,6 +106,30 @@ public:
 		drawTriangle(left, right, up);
 	}
 
+};
+
+class r_Triangle :public GeometricObject
+{
+public:
+	int left, right, up;
+
+public:
+	r_Triangle(const int& _left, const int& _right, const int& _up)
+	{
+		initialize(_left, _right, _up);
+	}
+
+	void initialize(const int& _left, const int& _right, const int& _up)
+	{
+		left = _left;
+		right = _right;
+		up = _up;
+	}
+
+	void draw()
+	{
+		Reverse_drawTriangle(left, right, up);
+	}
 };
 
 class F_Box :public GeometricObject
@@ -83,6 +158,18 @@ public:
 };
 
 class Line : public GeometricObject
+{
+public:
+	int start_x, start_y;
+	int end_x, end_y;
+
+	void draw()
+	{
+		drawLine(start_x, start_y, end_x, end_y, 1.0f, 0.0f, 0.0f);
+	}
+};
+
+class r_Line : public GeometricObject
 {
 public:
 	int start_x, start_y;
@@ -147,13 +234,45 @@ public:
 	}
 };
 
+class L_Line :public GeometricObject
+{
+	int start_x;
+	int start_y, end_y;
+
+	//for (int i = 120; i < 180; i++)
+	//	drawPixel(start_x, i, 1.0f, 0.0f, 0.0f);
+
+public:
+	L_Line() {}
+
+	L_Line(const int& _start_x, const int& _start_y,
+		 const int& _end_y)
+	{
+		initialize(_start_x, _start_y, _end_y);
+	}
+
+	void initialize(const int& _start_x, const int& _start_y,
+		 const int& _end_y)
+	{
+		start_x = _start_x;
+		start_y = _start_y;
+		end_y = _end_y;
+	}
+
+	void draw()
+	{
+		for (int i = start_y; i < end_y;i++)
+			drawPixel(start_x, i, 0.0f, 0.0f, 0.0f);
+	}
+};
+
 GeometricObject **my_objects = new GeometricObject*[20];
 
 void drawOnPixelBuffer(double xpos, double ypos)
 {
 	std::fill_n(pixels, width*height * 3, 1.0f);	// white background
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 20; i++)
 		my_objects[i]->draw();
 }
 
@@ -197,6 +316,44 @@ int main(void)
 		k++;
 	}
 
+	//initialize half_Circle
+	for (int i = 10,k=2; i < 12; i++)
+	{
+		my_objects[i] = new half_Circle((i+k) * 20+80,400, 10);
+		k++;
+	}
+
+	//initialize re_half_Circle
+	for (int i = 12, k = 3; i < 14; i++)
+	{
+		my_objects[i] = new r_half_Circle((i + k) * 20 + 180, 150, 10);
+		k++;
+	}
+
+	//initialize reverse_Line
+	for (int i = 14; i < 16; i++)
+	{
+		r_Line *temp = new r_Line;
+		temp->start_x = 340 + 50 * i;
+		temp->start_y = 420;
+		temp->end_x = 370 + 50 * i;
+		temp->end_y = 390;
+
+		my_objects[i] = temp;
+	}
+
+	//initialize re_Triangle
+	for (int i = 16, k = 0; i < 18; i++)
+	{
+		my_objects[i] = new r_Triangle((i + k) * 40+500, (i + k) * 40 + 540, 820);
+		k++;
+	}
+
+	//initialize 1-Line
+	for (int i = 18,k=0; i < 20; i++)
+	{
+		my_objects[i] = new L_Line(30 * i+680,130, 160);
+	}
 
 	GLFWwindow* window;
 
@@ -322,6 +479,13 @@ void drawTriangle(const int& left, const int& right, const int& up)
 	drawLine(left, (up / 2), right, (up / 2), 1.0f, 0.0f, 0.0f);
 }
 
+void Reverse_drawTriangle(const int& left, const int& right, const int& up)
+{
+	drawLine(left, (up / 2), (left + right) / 2, up / 2 - 30, 1.0f, 0.0f, 0.0f);
+	drawLine((left + right) / 2, up / 2 - 30, right, (up / 2), 1.0f, 0.0f, 0.0f);
+	drawLine(left, (up / 2), right, (up / 2), 1.0f, 0.0f, 0.0f);
+}
+
 void SecondCircle(const int& x_c, const int& y_c, const int& radius)
 {
 	for (double j = 0; j<height; j++)
@@ -342,6 +506,19 @@ void Tenth_Circle(const int& x_c, const int& y_c, const int& radius)
 		{
 			double func = ((i - x_c)*(i - x_c) + (j - y_c)*(j - y_c) - radius*radius);
 			if (func >= 0 && func <= 120 && i <= x_c)
+				drawPixel(i, j, 1.0f, 0.0f, 0.0f);
+			else
+				drawPixel(0, 0, 1.0f, 1.0f, 1.0f);
+		}
+}
+
+void Reverse_Tenth_Circle(const int& x_c, const int& y_c, const int& radius)
+{
+	for (double j = 0; j<height; j++)
+		for (double i = 0; i < width; i++)
+		{
+			double func = ((i - x_c)*(i - x_c) + (j - y_c)*(j - y_c) - radius*radius);
+			if (func >= 0 && func <= 120 && i >= x_c)
 				drawPixel(i, j, 1.0f, 0.0f, 0.0f);
 			else
 				drawPixel(0, 0, 1.0f, 1.0f, 1.0f);
