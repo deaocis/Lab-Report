@@ -28,24 +28,112 @@ class GeometricObject
 public:
 	virtual void draw()
 	{
-		std::cout << "Error!" << std::endl;
+		std::cout << "Circle Error!" << std::endl;
 	}
 };
 
-class Circle : public GeometricObject
+class Triangle :public GeometricObject
 {
 public:
-	int center_x, center_y;
-	int radius;
-	double xpos, ypos;
+	int left, right, up;
 
 public:
-	Circle(const int& _center_x, const int& _center_y, const int& _radius)
+	Triangle(const int& _left, const int& _right, const int& _up)
 	{
-		initialize(_center_x,_center_y,_radius);
+		initialize(_left, _right, _up);
 	}
 
+	void initialize(const int& _left, const int& _right, const int& _up)
+	{
+		left = _left;
+		right = _right;
+		up = _up;
+	}
+
+	void draw()
+	{
+		drawTriangle(left, right, up);
+	}
+
+};
+
+class F_Box :public GeometricObject
+{
 public:
+	int start_x, start_y;
+
+public:
+	F_Box() {}
+
+	F_Box(const int& _start_x, const int& _start_y)
+	{
+		initialize(_start_x, _start_y);
+	}
+
+	void initialize(const int& _start_x, const int& _start_y)
+	{
+		start_x = _start_x;
+		start_y = _start_y;
+	}
+
+	void draw()
+	{
+		drawBox(start_x, start_y);
+	}
+};
+
+class Line : public GeometricObject
+{
+public:
+	int start_x, start_y;
+	int end_x, end_y;
+
+	void draw()
+	{
+		drawLine(start_x, start_y, end_x, end_y, 1.0f, 0.0f, 0.0f);
+	}
+};
+
+class Box :public GeometricObject
+{
+	int start_x, start_y;
+	int end_x, end_y;
+
+public:
+	Box(){}
+
+	Box(const int& _start_x, const int& _start_y,
+		const int& _end_x, const int& _end_y)
+	{
+		initialize(_start_x, _start_y, _end_x, _end_y);
+	}
+
+	void initialize(const int& _start_x, const int& _start_y,
+		const int& _end_x, const int& _end_y)
+	{
+		start_x = _start_x;
+		start_y = _start_y;
+		end_x = _end_x;
+		end_y = _end_y;
+	}
+
+	void draw()
+	{
+		drawEmptyBox(start_x, start_y, end_x, end_y);
+	}
+};
+
+class s_Circle : public GeometricObject
+{
+	int center_x, center_y;
+	int radius;
+
+public:
+	s_Circle(const int& _center_x, const int& _center_y, const int& _radius)
+	{
+		initialize(_center_x, _center_y, _radius);
+	}
+
 	void initialize(const int& _center_x, const int& _center_y, const int& _radius)
 	{
 		center_x = _center_x;
@@ -53,79 +141,62 @@ public:
 		radius = _radius;
 	}
 
-public:
 	void draw()
 	{
 		drawCircle(center_x, center_y, radius);
-
-		if (IntheCircle(xpos, ypos, center_x, height-center_y, radius)==true)
-		{
-			ChangeCircle_Color(center_x, center_y, radius);
-		}
 	}
 };
 
-GeometricObject **my_objects = new GeometricObject*[num_circles];
+GeometricObject **my_objects = new GeometricObject*[20];
 
 void drawOnPixelBuffer(double xpos, double ypos)
 {
 	std::fill_n(pixels, width*height * 3, 1.0f);	// white background
 
-	for (int i = 0; i < num_circles / 2; i++)
-	{
+	for (int i = 0; i < 10; i++)
 		my_objects[i]->draw();
-
-		if (IntheCircle(xpos, ypos, (i + 1) * 60, height - 400, 30) == true)
-		{
-			ChangeCircle_Color((i + 1) * 60, 400, 30);
-		}
-	}
-
-	for (int i = num_circles / 2; i < num_circles; i++)
-	{
-		my_objects[i]->draw();
-
-		if (IntheCircle(xpos, ypos, (i - 9) * 60, height - 150, 30) == true)
-		{
-			ChangeCircle_Color((i - 9) * 60, 150, 30);
-		}
-	}
 }
 
 int main(void)
 {
-	//Circle my_circle(60, 70, 30);
-	/*Circle my_box(50, 50, 180, 200);*/
-	
 	//initialize Line
-	/*for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		Line *temp = new Line;
-		temp->start_x = 0 + 50 * i;
-		temp->start_y = 0 ;
-		temp->end_x = 50 + 50 * i;
-		temp->end_y = 50;
+		temp->start_x =  70+50 * i;
+		temp->start_y = 130 ;
+		temp->end_x = 100 + 50 * i;
+		temp->end_y = 160;
 
 		my_objects[i] = temp;
-	}*/
+	}
 
 	//initialize Box
-	//for (int i = 5; i < 10; i++)
-	//{
-	//	my_objects[i] = new Circle(i * 50, 70, i * 50 + 120, 120);
-	//	//my_boxes[i]->initialize(i*50, 70, i * 50 + 120, 120);
-	//}
-
-	//initialize Circle
-	for (int i = 0; i < num_circles/2; i++)
+	for (int i = 2, k=0; i < 4; i++)
 	{
-		my_objects[i] = new Circle((i+1) * 60, 400, 30);
+		my_objects[i] = new Box((i + k) * 30, 380, 30 * (i + k + 1), 410);
+		k++;
 	}
 
-	for (int i = num_circles/2; i < num_circles; i++)
+	//initialize s_Circle
+	for (int i = 4; i < 6; i++)
 	{
-		my_objects[i] = new Circle((i-9)* 60, 150, 30);
+		my_objects[i] = new s_Circle(i*60-40, 400, 20);
 	}
+
+	//initialize Full_Box
+	for (int i = 6; i < 8; i++)
+	{
+		my_objects[i] = new F_Box(i*70-210, 150);
+	}
+
+	//initialize Triangle
+	for (int i = 8,k=0; i < 10; i++)
+	{
+		my_objects[i] = new Triangle((i+k) * 40, (i+k)*40+40, 280);
+		k++;
+	}
+
 
 	GLFWwindow* window;
 
@@ -155,108 +226,6 @@ int main(void)
 		glfwGetCursorPos(window, &xpos, &ypos);
 
 		drawOnPixelBuffer(xpos, ypos);
-
-		////First Icon
-		//drawLine(40, 380, 120, 420, 1.0f, 0.0f, 0.0f);
-		//drawLine(41, 380, 121, 420, 1.0f, 0.0f, 0.0f);
-		//drawLine(42, 380, 122, 420, 1.0f, 0.0f, 0.0f);  //3-width-line
-		//if (IntheCircle(xpos, ypos, 80, height - 400, 60) == true)
-		//{
-		//	ChangeCircle_Color(80, 400, 60);
-		//}
-
-		////Second Icon
-		//SecondCircle(200, 400, 30);
-
-		//if (IntheCircle(xpos, ypos, 200, height - 400, 60) == true)
-		//{
-		//	ChangeCircle_Color(200, 400, 60);
-		//}
-
-		////Third Icon
-		//drawEmptyBox(300, 380, 340, 420);
-
-		//if (IntheCircle(xpos, ypos, 320, height - 400, 60) == true)
-		//{
-		//	ChangeCircle_Color(320, 400, 60);
-		//}
-
-		////Fourth Icon
-		//drawLine(410, 380, 460, 430, 1.0f, 0.0f, 0.0f);
-		//drawLine(410, 430, 460, 380, 1.0f, 0.0f, 0.0f);
-
-		//if (IntheCircle(xpos, ypos, 430, height - 400, 60) == true)
-		//{
-		//	ChangeCircle_Color(440, 400, 60);
-		//}
-
-		////Fifth Icon
-		//for (int i = 370; i < 440; i++)
-		//	drawPixel(560, i, 1.0f, 0.0f, 0.0f);
-
-		//drawLine(530, 390, 560, 370, 1.0f, 0.0f, 0.0f);
-		//drawLine(560, 370, 590, 390, 1.0f, 0.0f, 0.0f);
-
-		//if (IntheCircle(xpos, ypos, 560, height - 400, 60) == true)
-		//{
-		//	ChangeCircle_Color(560, 400, 60);
-		//}
-
-		////Sixth Icon
-		//drawLine(50, 150, 110, 150, 1.0f, 0.0f, 0.0f);
-		//drawLine(85, 165, 110, 150, 1.0f, 0.0f, 0.0f);
-		//drawLine(85, 135, 110, 150, 1.0f, 0.0f, 0.0f);
-
-		//if (IntheCircle(xpos, ypos, 80, height - 150, 60) == true)
-		//{
-		//	ChangeCircle_Color(80, 150, 60);
-		//}
-
-		////Seventh Icon
-
-		//drawLine(170, 120, 200, 180, 1.0f, 0.0f, 0.0f);
-		//drawLine(200, 180, 230, 120, 1.0f, 0.0f, 0.0f);
-		//drawLine(183, 145, 217, 145, 1.0f, 0.0f, 0.0f);
-
-		//if (IntheCircle(xpos, ypos, 200, height - 150, 60) == true)
-		//{
-		//	ChangeCircle_Color(200, 150, 60);
-		//}
-
-		////Eigth Icon
-		//for (int i = 100; i < 190; i++)
-		//	drawPixel(320, i, 1.0f, 0.0f, 0.0f);
-
-		//if (IntheCircle(xpos, ypos, 320, height - 150, 60) == true)
-		//{
-		//	ChangeCircle_Color(320, 150, 60);
-		//}
-
-		////Nineth Icon
-
-		//drawLine(405, 150, 475, 150, 1.0f, 0.0f, 0.0f);
-		//drawLine(405, 150, 420, 165, 1.0f, 0.0f, 0.0f);
-		//drawLine(405, 150, 420, 135, 1.0f, 0.0f, 0.0f);
-
-		//if (IntheCircle(xpos, ypos, 440, height - 150, 60) == true)
-		//{
-		//	ChangeCircle_Color(440, 150, 60);
-		//}
-
-		////Tenth Icon
-
-		//for (int i = 120; i < 175; i++)
-		//	drawPixel(560, i, 1.0f, 0.0f, 0.0f);
-
-		//drawLine(545, 160, 560, 175, 1.0f, 0.0f, 0.0f);
-		//drawLine(560, 175, 575, 160, 1.0f, 0.0f, 0.0f);
-
-		//if (IntheCircle(xpos, ypos, 560, height - 150, 60) == true)
-		//{
-		//	ChangeCircle_Color(560, 150, 60);
-		//}
-
-
 
 		glDrawPixels(width, height, GL_RGB, GL_FLOAT, pixels);
 		//We do that.
@@ -309,7 +278,7 @@ void drawEmptyBox(const int& i_s, const int& j_s, const int& i_e, const int& j_e
 
 void drawBox(const int& i_c, const int& j_c)
 {
-	const int thickness = 70;
+	const int thickness = 20;
 
 	for (int j = j_c - thickness; j < j_c + thickness; j++)
 		for (int i = i_c - thickness; i < i_c + thickness; i++)
@@ -348,8 +317,8 @@ void drawCircle(int x0, int y0, int radius)  //Real Circle
 
 void drawTriangle(const int& left, const int& right, const int& up)
 {
-	drawLine(left, (up / 2), (left + right) / 2, up - 10, 1.0f, 0.0f, 0.0f);
-	drawLine((left + right) / 2, up - 10, right, (up / 2), 1.0f, 0.0f, 0.0f);
+	drawLine(left, (up / 2), (left + right) / 2, up/2+30, 1.0f, 0.0f, 0.0f);
+	drawLine((left + right) / 2, up/2+30 , right, (up / 2), 1.0f, 0.0f, 0.0f);
 	drawLine(left, (up / 2), right, (up / 2), 1.0f, 0.0f, 0.0f);
 }
 
@@ -415,50 +384,3 @@ bool IntheCircle(const double x, const double y,
 	if (func > 0.0) return false;
 	else return true;
 }
-
-
-
-
-//class Line : public GeometricObject
-//{
-//public:
-//	int start_x, start_y;
-//	int end_x, end_y;
-//
-//	void draw()
-//	{
-//		drawLine(start_x, start_y, end_x, end_y, 1.0f, 0.0f, 0.0f);
-//	}
-//};
-
-//class Box : public GeometricObject
-//{
-//public:
-//	int start_x, start_y;
-//	int end_x, end_y;
-//
-//public:
-//	//constructor
-//	Box()
-//	{}
-//
-//	Box(const int& _start_x, const int& _start_y,
-//		const int& _end_x, const int& _end_y)
-//	{
-//		initialize(_start_x, _start_y, _end_x, _end_y);
-//	}
-//
-//public:
-//	void initialize(const int& _start_x, const int& _start_y,
-//		const int& _end_x, const int& _end_y)
-//	{
-//		start_x = _start_x;
-//		start_y = _start_y;
-//		end_x = _end_x;
-//		end_y = _end_y;
-//	}
-//	void draw()
-//	{
-//		drawEmptyBox(start_x, start_y, end_x, end_y);
-//	}
-//};
