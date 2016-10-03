@@ -32,7 +32,34 @@ public:
 	{
 		std::cout << "Circle Error!" << std::endl;
 	}
+
+public:
+	int center_x, center_y;
+	int radius;
+	double xpos, ypos;
+
+	GeometricObject()
+	{}
+
+public:
+	void initialize(const int& _center_x, const int& _center_y, const int& _radius)
+	{
+		center_x = _center_x;
+		center_y = _center_y;
+		radius = _radius;
+	}
+
+public:
+	void draw_Circle()
+	{
+		drawCircle(center_x, center_y, radius);
+		/*	if (IntheCircle(xpos, ypos, center_x, height-center_y, radius)==true)
+		{
+		ChangeCircle_Color(center_x, center_y, radius);
+		}*/
+	}
 };
+
 
 class r_half_Circle : public GeometricObject
 {
@@ -163,6 +190,9 @@ public:
 	int start_x, start_y;
 	int end_x, end_y;
 
+	Line()
+	{}
+
 	void draw()
 	{
 		drawLine(start_x, start_y, end_x, end_y, 1.0f, 0.0f, 0.0f);
@@ -175,6 +205,8 @@ public:
 	int start_x, start_y;
 	int end_x, end_y;
 
+	r_Line()
+	{}
 	void draw()
 	{
 		drawLine(start_x, start_y, end_x, end_y, 1.0f, 0.0f, 0.0f);
@@ -239,9 +271,6 @@ class L_Line :public GeometricObject
 	int start_x;
 	int start_y, end_y;
 
-	//for (int i = 120; i < 180; i++)
-	//	drawPixel(start_x, i, 1.0f, 0.0f, 0.0f);
-
 public:
 	L_Line() {}
 
@@ -266,47 +295,17 @@ public:
 	}
 };
 
-class Circle : public GeometricObject
-{
-public:
-	int center_x, center_y;
-	int radius;
-	double xpos, ypos;
-
-public:
-	Circle(const int& _center_x, const int& _center_y, const int& _radius)
-	{
-		initialize(_center_x, _center_y, _radius);
-	}
-
-public:
-	void initialize(const int& _center_x, const int& _center_y, const int& _radius)
-	{
-		center_x = _center_x;
-		center_y = _center_y;
-		radius = _radius;
-	}
-
-public:
-	void draw()
-	{
-		drawCircle(center_x, center_y, radius);
-
-		/*	if (IntheCircle(xpos, ypos, center_x, height-center_y, radius)==true)
-		{
-		ChangeCircle_Color(center_x, center_y, radius);
-		}*/
-	}
-};
-
 GeometricObject **my_objects = new GeometricObject*[40];
 
 void drawOnPixelBuffer(double xpos, double ypos)
 {
 	std::fill_n(pixels, width*height * 3, 1.0f);	// white background
 
-	for (int i = 0; i < 40; i++)
+	for (int i = 0; i < 20; i++)
 		my_objects[i]->draw();
+
+	for (int i = 20; i < 40; i++)
+		my_objects[i]->draw_Circle();
 
 	//Circle color Change
 	/*for (int i = 0; i < num_circles / 2; i++)
@@ -413,11 +412,25 @@ int main(void)
 	//initialize Circle
 	for (int i = 20; i < 40; i++)
 	{
-		my_objects[i] = new Circle((i - 19) * 60, 400, 30);
-		if (i >= 30)
-			my_objects[i] = new Circle((i - 29) * 60, 150, 30);
-	}
+		GeometricObject *temp = new GeometricObject;
+		temp->center_x = (i - 19) * 60;
+		temp->center_y = 400;
+		temp->radius = 30;
 
+		my_objects[i] = temp;
+		if (i >= 30)
+		{
+			GeometricObject *temp = new GeometricObject;
+			temp->center_x = (i - 29) * 60;
+			temp->center_y = 150;
+			temp->radius = 30;
+
+			my_objects[i] = temp;
+		}
+		/*my_objects[i] = new GeometricObject((i - 19) * 60, 400, 30);
+		if (i >= 30)
+			my_objects[i] = new GeometricObject((i - 29) * 60, 150, 30);*/
+	}
 
 	GLFWwindow* window;
 
