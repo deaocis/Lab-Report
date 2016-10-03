@@ -37,7 +37,7 @@ public:
 public:
 	int center_x, center_y;
 	int radius;
-	double xpos, ypos;
+	int xpos, ypos;
 
 	GeometricObject()
 	{}
@@ -51,13 +51,15 @@ public:
 	}
 
 public:
-	void draw_Circle()
+	void draw_Circle(int xpos,int ypos)
 	{
 		drawCircle(center_x, center_y, radius);
-			if (IntheCircle(xpos, ypos, center_x, height-center_y, radius)==true)
-		{
-		ChangeCircle_Color(center_x, center_y, radius);
-		}
+		if (IntheCircle(xpos, ypos, center_x, center_y+180, radius) == true)
+			ChangeCircle_Color(center_x, center_y, radius);
+
+		if (IntheCircle(xpos, ypos, center_x, center_y -320, radius) == true)
+			ChangeCircle_Color(center_x, center_y, radius);
+
 	}
 };
 
@@ -306,10 +308,10 @@ void drawOnPixelBuffer(double xpos, double ypos)
 		my_objects[i]->draw();
 
 	for (int i = 20; i < 40; i++)
-		my_objects[i]->draw_Circle();
+		my_objects[i]->draw_Circle(xpos,ypos);
 
 	//Circle color Change
-	for (int i = 0; i < num_circles / 2; i++)
+	/*for (int i = 0; i < num_circles / 2; i++)
 	{
 		my_objects[i]->draw();
 
@@ -327,7 +329,7 @@ void drawOnPixelBuffer(double xpos, double ypos)
 		{
 		ChangeCircle_Color((i - 9) * 60, 150, 30);
 		}
-	}
+	}*/
 }
 
 int main(void)
