@@ -347,7 +347,7 @@ int main(void)
 	//initialize Box
 	for (int i = 2, k = 0; i < 4; i++)
 	{
-		my_objects[i] = new Box((i + k) * 30 - 15, 380, 30 * (i + k + 1) - 15, 410);
+		my_objects[i] = new Box((i + k) * 30 - 15, 385, 30 * (i + k + 1) - 15, 415);
 		k++;
 	}
 
@@ -360,7 +360,7 @@ int main(void)
 	//initialize Full_Box
 	for (int i = 6; i < 8; i++)
 	{
-		my_objects[i] = new F_Box(i * 70 - 245, 150);
+		my_objects[i] = new F_Box(i * 60 - 180, 150);
 	}
 
 	//initialize Triangle
@@ -373,14 +373,14 @@ int main(void)
 	//initialize half_Circle
 	for (int i = 10, k = 2; i < 12; i++)
 	{
-		my_objects[i] = new half_Circle((i + k) * 20 + 75, 400, 10);
+		my_objects[i] = new half_Circle((i + k) * 30-55 , 400, 10);
 		k++;
 	}
 
 	//initialize re_half_Circle
 	for (int i = 12, k = 3; i < 14; i++)
 	{
-		my_objects[i] = new r_half_Circle((i + k) * 20 + 120, 150, 10);
+		my_objects[i] = new r_half_Circle((i + k) * 30 - 35, 150, 10);
 		k++;
 	}
 
