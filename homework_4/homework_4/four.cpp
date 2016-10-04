@@ -308,6 +308,7 @@ public:
 
 GeometricObject **my_objects = new GeometricObject*[40];
 
+//Draw Function
 void drawOnPixelBuffer(int xpos, int ypos)
 {
 	std::fill_n(pixels, width*height * 3, 1.0f);	// white background
@@ -421,9 +422,6 @@ int main(void)
 
 			my_objects[i] = temp;
 		}
-		/*my_objects[i] = new GeometricObject((i - 19) * 60, 400, 30);
-		if (i >= 30)
-		my_objects[i] = new GeometricObject((i - 29) * 60, 150, 30);*/
 	}
 
 	GLFWwindow* window;
