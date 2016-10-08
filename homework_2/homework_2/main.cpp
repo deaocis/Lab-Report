@@ -30,7 +30,7 @@ class GeometricObject
 public:
 	virtual void draw()
 	{
-		std::cout << "Circle Error!" << std::endl;
+		drawCircle(center_x, center_y, radius);
 	}
 
 public:
@@ -47,12 +47,6 @@ public:
 		center_x = _center_x;
 		center_y = _center_y;
 		radius = _radius;
-	}
-
-public:
-	void draw_Circle()
-	{
-		drawCircle(center_x, center_y, radius);
 	}
 };
 
@@ -302,7 +296,7 @@ void drawOnPixelBuffer(double xpos, double ypos)
 		my_objects[i]->draw();
 
 	for (int i = 20; i < 40; i++)
-		my_objects[i]->draw_Circle();
+		my_objects[i]->draw();
 }
 
 int main(void)
