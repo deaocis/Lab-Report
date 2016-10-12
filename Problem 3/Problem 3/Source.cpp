@@ -7,62 +7,10 @@ const int height = 480;
 
 float* pixels = new float[width*height * 3];
 
-void drawPixel(const int& i, const int& j, const float& red, const float& green, const float& blue)
-{
-	pixels[(i + width* j) * 3 + 0] = red;
-	pixels[(i + width* j) * 3 + 1] = green;
-	pixels[(i + width* j) * 3 + 2] = blue;
-}
-
-void drawLine(const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue)
-{
-	for (int i = i0; i <= i1; i++)
-	{
-		const int j = (j1 - j0)*(i - i0) / (i1 - i0) + j0;
-
-		drawPixel(i, j, red, green, blue);
-	}
-}
-
-void drawEmptyBox(const int& i_s, const int& j_s, const int& i_e, const int& j_e)  //s=start, e=end
-{
-	for (int j = j_s; j <= j_e; j++)
-		for (int i = i_s; i <= i_e; i++)
-		{
-			if (j == j_e || j == j_s || i == i_s || i == i_e)
-				drawPixel(i, j, 0.0f, 0.0f, 1.0f);
-			else
-				drawPixel(i, j, 1.0f, 1.0f, 1.0f);
-		}
-}
-
-void drawCircle(int x0, int y0, int radius)  //Real Circle
-{
-	int x = radius;
-	int y = 0;
-	int err = 0;
-
-	while (x >= y)
-	{
-
-		drawPixel(x0 + x, y0 + y, 0.0f, 1.0f, 0.0f);
-		drawPixel(x0 + y, y0 + x, 0.0f, 1.0f, 0.0f);
-		drawPixel(x0 - y, y0 + x, 0.0f, 1.0f, 0.0f);
-		drawPixel(x0 - x, y0 + y, 0.0f, 1.0f, 0.0f);
-		drawPixel(x0 - x, y0 - y, 0.0f, 1.0f, 0.0f);
-		drawPixel(x0 - y, y0 - x, 0.0f, 1.0f, 0.0f);
-		drawPixel(x0 + y, y0 - x, 0.0f, 1.0f, 0.0f);
-		drawPixel(x0 + x, y0 - y, 0.0f, 1.0f, 0.0f);
-
-		y += 1;
-		err += 1 + 2 * y;
-		if (2 * (err - x) + 1 > 0)
-		{
-			x -= 1;
-			err += 1 - 2 * x;
-		}
-	}
-}
+void drawPixel(const int& i, const int& j, const float& red, const float& green, const float& blue);
+void drawLine(const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue);
+void drawEmptyBox(const int& i_s, const int& j_s, const int& i_e, const int& j_e); //s=start, e=end
+void drawCircle(int x0, int y0, int radius);  //Real Circle
 
 class Box   // NO PARENT
 {
@@ -83,7 +31,7 @@ public:
 };
 
 template <class TTT>
-class GeometricObject:public GeometricObjectInterface
+class GeometricObject :public GeometricObjectInterface
 {
 public:
 	void draw()
@@ -148,4 +96,65 @@ int main(void)
 
 	glfwTerminate();
 	return 0;
+}
+
+
+
+
+
+void drawPixel(const int& i, const int& j, const float& red, const float& green, const float& blue)
+{
+	pixels[(i + width* j) * 3 + 0] = red;
+	pixels[(i + width* j) * 3 + 1] = green;
+	pixels[(i + width* j) * 3 + 2] = blue;
+}
+
+void drawLine(const int& i0, const int& j0, const int& i1, const int& j1, const float& red, const float& green, const float& blue)
+{
+	for (int i = i0; i <= i1; i++)
+	{
+		const int j = (j1 - j0)*(i - i0) / (i1 - i0) + j0;
+
+		drawPixel(i, j, red, green, blue);
+	}
+}
+
+void drawCircle(int x0, int y0, int radius)  //Real Circle
+{
+	int x = radius;
+	int y = 0;
+	int err = 0;
+
+	while (x >= y)
+	{
+
+		drawPixel(x0 + x, y0 + y, 0.0f, 1.0f, 0.0f);
+		drawPixel(x0 + y, y0 + x, 0.0f, 1.0f, 0.0f);
+		drawPixel(x0 - y, y0 + x, 0.0f, 1.0f, 0.0f);
+		drawPixel(x0 - x, y0 + y, 0.0f, 1.0f, 0.0f);
+		drawPixel(x0 - x, y0 - y, 0.0f, 1.0f, 0.0f);
+		drawPixel(x0 - y, y0 - x, 0.0f, 1.0f, 0.0f);
+		drawPixel(x0 + y, y0 - x, 0.0f, 1.0f, 0.0f);
+		drawPixel(x0 + x, y0 - y, 0.0f, 1.0f, 0.0f);
+
+		y += 1;
+		err += 1 + 2 * y;
+		if (2 * (err - x) + 1 > 0)
+		{
+			x -= 1;
+			err += 1 - 2 * x;
+		}
+	}
+}
+
+void drawEmptyBox(const int& i_s, const int& j_s, const int& i_e, const int& j_e)  //s=start, e=end
+{
+	for (int j = j_s; j <= j_e; j++)
+		for (int i = i_s; i <= i_e; i++)
+		{
+			if (j == j_e || j == j_s || i == i_s || i == i_e)
+				drawPixel(i, j, 0.0f, 0.0f, 1.0f);
+			else
+				drawPixel(i, j, 1.0f, 1.0f, 1.0f);
+		}
 }
