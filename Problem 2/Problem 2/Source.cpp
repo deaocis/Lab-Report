@@ -28,4 +28,6 @@ int main()
 	double_vec.x_ = 7.7;
 	double_vec.y_ = 8.8;
 	double_vec.print();
+
+	return 0;
 }
