@@ -30,21 +30,14 @@ public:
 class Matrix_MxM
 {
 public:
-	int row_num, column_num;
-	int* number1 = nullptr;
+	int row_num = 0, column_num = 0;
 	int** number = nullptr;
-
 
 	Matrix_MxM(const int& row_num_, const int& column_num_)
 	{
 		row_num = row_num_;
 		column_num = column_num_;
 
-		//number = (int**)malloc(sizeof(int*)*row_num);
-		//for (int r = 0; r<row_num; r++)
-		//	number[r] = (int*)malloc(sizeof(int)*column_num);
-
-			
 		number = new int*[row_num];
 		for (int r = 0; r < row_num; r++)
 			number[r] = new int[column_num];
@@ -58,20 +51,20 @@ public:
 		return number[row_num][column_num];
 	}
 
-	friend int operator*(const Matrix_MxM& mat_var_, const VectorND& vec_var_)
+	friend VectorND operator*(Matrix_MxM mat_var_,VectorND vec_var_)
 	{
-		int result=0;
-		//mat_var_.row_num
+		VectorND vector(3);
 
-		
-		return result;
+		for (int r = 0; r < 3; r++)
+		{
+			for (int c = 0; c < 3; c++)
+			{
+				vector.assign(r) = mat_var_.assign(r, c)*vec_var_.assign(r);
+			}
+		}
+		for (int r = 0; r < 3;r++)
+			return vector[r];
 	}
-
-	void operator=(const int&)
-	{
-
-	}
-
 };
 
 
@@ -131,13 +124,11 @@ int main()
 
 	cout << endl;
 
-	Matrix_MxM y(row,1);
+	VectorND y(row);
 	y = m * v;
 
 
 	for (int r = 0; r < row; r++)
-		for (int c = 0; c < 1; c++)
-			cout << y.assign(r, c) << endl;
-	//return 0;
-
+		cout << y.assign(r) << endl;
+	return 0;
 }
