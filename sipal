@@ -1,0 +1,68 @@
+#include <iostream>
+
+using namespace std;
+
+#define random_data 100000
+
+class hypothesis
+{
+public:
+	float a_ = 0.0f;
+	float b_ = 0.0f;
+	float c_ = 0.0f;
+
+	float getY(const float& x_input)
+	{
+		return a_*x_input*x_input + b_*x_input + c_;
+	}
+};
+
+int main()
+{
+	float* x_input = new float[random_data] {};
+	float* y_data = new float[random_data] {};
+
+	hypothesis lh;
+
+	const float learning_rate = 0.000000000000001;
+	
+	for (int j = 0; j < random_data; j++)
+	{
+		x_input[j] = j;   //x_input={0,1,2,3,4,...}
+		//y_data[j] = 1 * j *j + 2 * j + 1;   //y_data={1,4,7,10...}         y_data={1,4,9,16,...}
+		y_data[j] = 1 * j *j + 2 * j -3*j*j+2*j+1; /*-3x ^ 2 + 2x + 1*/
+	}
+
+	for (int tr = 0; tr < 1000; tr++)
+	{
+		for (int i = 0; i < random_data; i++)
+		{
+			//x_input[i] = i;   //x_input={0,1,2,3,4,...}
+			//y_data[i] = lh.a_ * i *i + lh.b_*i + lh.c_;  //y_data={0,0,0,0...}   a_,b_,c_=0
+
+			const float error = y_data[i] - lh.getY(x_input[i]);
+			const float square_error = 0.5*error*error;
+
+			//square_error=0.5*(y_target-a*x*x-b*x-c)^2
+			//dse_da=(y_target-a*x*x-b*x-c)*2*x
+			//dse_db=(y_target-a*x*x-b*x-c)*-x
+			//dse_dc=(y_target-a*x*x-b*x-c)*-1
+
+			const float dse_da = error*-2*x_input[i];
+			const float dse_db = error*-x_input[i];
+			const float dse_dc = error*-1;
+
+			lh.a_ += dse_da*learning_rate;
+			lh.b_ += dse_db*learning_rate;
+			lh.c_ += dse_dc*learning_rate;
+
+			cout << "From trained hypothesis " << endl << y_data[i] << "   " << lh.getY(x_input[i]) << endl;
+		}
+	}
+	delete[] x_input;
+	delete[] y_data;
+	return 0;
+}
+
+//Use y = a*x*x + b*x + c for your hypothesis instead of the linear hypothesis in Step 1. (pt 2)
+//Compare result with Step 1.
